@@ -26,5 +26,5 @@ buildNumber.properties
 .mvn/timing.properties
 
 ###idea
-/.idea/
-.iml
+.idea/
+*.iml
