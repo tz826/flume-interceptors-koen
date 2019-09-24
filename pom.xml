@@ -18,7 +18,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
-        <flume.version>1.8.0</flume.version>
+        <flume.version>1.9.0</flume.version>
         <jdk-version>1.8</jdk-version>
 
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
@@ -86,7 +86,7 @@
                 <version>2.2-beta-4</version>
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <outputDirectory>E:\apache-flume-1.8.0-bin-debug\plugins.d</outputDirectory>
+                    <outputDirectory>E:\apache-flume-1.9.0-bin\plugins.d</outputDirectory>
                     <descriptors>
                         <descriptor>assembly/assembly.xml</descriptor>
                     </descriptors>

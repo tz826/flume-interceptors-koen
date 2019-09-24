@@ -12,6 +12,8 @@ public class JsonInterceptorDateStrSerializer implements
         JsonInterceptorSerializer {
     private DateTimeFormatter formatter;
     private DateTimeFormatter formatterTarget;
+    private String defaultValue;
+
     @Override
     public void configure(Context context) {
         String pattern = context.getString("pattern");
@@ -22,15 +24,26 @@ public class JsonInterceptorDateStrSerializer implements
         Preconditions.checkArgument(!StringUtils.isEmpty(patternTarget),
                 "Must configure with a valid patternTarget");
 
+        defaultValue = context.getString("defaultValue");
         formatter = DateTimeFormat.forPattern(pattern);
         formatterTarget = DateTimeFormat.forPattern(patternTarget);
     }
+
     @Override
     public String serialize(String value) {
-        DateTime dateTime = formatter.parseDateTime(value);
+        String reValue = defaultValue;
+        try {
+            if (StringUtils.isNotEmpty(value)) {
+                DateTime dateTime = formatter.parseDateTime(value);
+                reValue = dateTime.toString(formatterTarget);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-        return dateTime.toString(formatterTarget);
+        return reValue;
     }
+
     @Override
     public void configure(ComponentConfiguration conf) {
     }
