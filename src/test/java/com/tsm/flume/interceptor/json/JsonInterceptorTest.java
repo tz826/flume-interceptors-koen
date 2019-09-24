@@ -250,8 +250,10 @@ public class JsonInterceptorTest {
 
         Context context = getDefaultContext(headerName, headerJSONPath);
         context.put("serializers.s1.type", "com.tsm.flume.interceptor.json.JsonInterceptorDateStrSerializer");
+        context.put("serializers.s1.name", "test-date");
         context.put("serializers.s1.pattern", "yyyy-MM-dd'T'HH:mm:ssZ");
         context.put("serializers.s1.patternTarget", "yyyyMMdd");
+        context.put("serializers.s1.defaultValue", "unknow");
 
         JsonInterceptor interceptor = getInterceptor(context);
 
