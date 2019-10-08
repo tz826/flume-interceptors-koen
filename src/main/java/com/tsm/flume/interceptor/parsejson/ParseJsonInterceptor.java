@@ -113,17 +113,17 @@ public class ParseJsonInterceptor implements Interceptor {
      */
     public static class Builder implements Interceptor.Builder {
 
-        private String headerName;
-        private Boolean useheaderName;
-        private String fixedValue;
-        private String key;
-        private String sourceCharset;
-        private String targetCharset;
+        String headerName;
+        Boolean useHeaderName;
+        String fixedValue;
+        String key;
+        String sourceCharset;
+        String targetCharset;
 
         @Override
         public void configure(Context context) {
             headerName = context.getString(Constants.HEADER_NAME);
-            useheaderName = context.getBoolean(Constants.USE_HEADER_NAME);
+            useHeaderName = context.getBoolean(Constants.USE_HEADER_NAME);
             fixedValue = context.getString(Constants.FIXED_VALUE);
             key = context.getString(Constants.KEY);
             sourceCharset = context.getString(Constants.SOURCECHARSET, Constants.CHARSET_DEFAULT);
@@ -134,12 +134,12 @@ public class ParseJsonInterceptor implements Interceptor {
         public Interceptor build() {
             logger.info(String.format(
                     "Creating ParseJsonInterceptor:headerName=%s, useheaderName=%s, fixedValue=%s, key=%s,source_charset=%s,target_charset=%s",
-                    headerName, useheaderName, fixedValue, key, sourceCharset, targetCharset));
+                    headerName, useHeaderName, fixedValue, key, sourceCharset, targetCharset));
 
             Preconditions.checkArgument(headerName != null, "headerName name was misconfigured");
             Preconditions.checkArgument(key != null, "key name was misconfigured");
 
-            return new ParseJsonInterceptor(headerName, useheaderName, fixedValue, key, sourceCharset, targetCharset);
+            return new ParseJsonInterceptor(headerName, useHeaderName, fixedValue, key, sourceCharset, targetCharset);
         }
 
     }
@@ -147,7 +147,7 @@ public class ParseJsonInterceptor implements Interceptor {
     public static class Constants {
 
         private static String HEADER_NAME= "headerName";
-        private static String USE_HEADER_NAME = "useheaderName";
+        private static String USE_HEADER_NAME = "useHeaderName";
         private static String FIXED_VALUE = "fixedValue";
 
         public static final String KEY = "key";
