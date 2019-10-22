@@ -79,14 +79,15 @@ public class VerifyJsonInterceptor implements Interceptor {
             if (preserveExisting && headers.containsKey(headerName)) {
                 headers.put(headerName, headerValue);
             }
+
+            JsonObject jsonObject = new JsonObject();
+
+            DateTime dateTime = DateTime.now();
+            jsonObject.addProperty(eventTimeKey, dateTime.toString(formatter));
+            jsonObject.addProperty(eventJsonKey, contentStr);
+
+            event.setBody(jsonObject.toString().getBytes(Charset.forName(targetCharset)));
         }
-        JsonObject jsonObject = new JsonObject();
-
-        DateTime dateTime = DateTime.now();
-        jsonObject.addProperty(eventTimeKey, dateTime.toString(formatter));
-        jsonObject.addProperty(eventJsonKey, contentStr);
-
-        event.setBody(jsonObject.toString().getBytes(Charset.forName(targetCharset)));
 
         return event;
     }
@@ -152,10 +153,10 @@ public class VerifyJsonInterceptor implements Interceptor {
     public static class Constants {
 
         private static String HEADER_NAME = "headerName";
-        private static String HEADER_NAME_DEFAULT = "isJson";
+        private static String HEADER_NAME_DEFAULT = "verify_json";
 
         private static String HEADER_VALUE = "headerValue";
-        private static String HEADER_VALUE_DEFAULT = "json_error";
+        private static String HEADER_VALUE_DEFAULT = "verify_json_error_";
 
         private static String PRESERVE_EXISTING = "preserveExisting";
         private static Boolean PRESERVE_EXISTING_DEFAULT = true;
