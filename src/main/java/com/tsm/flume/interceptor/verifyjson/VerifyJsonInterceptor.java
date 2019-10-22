@@ -1,5 +1,6 @@
 package com.tsm.flume.interceptor.verifyjson;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.flume.Context;
@@ -55,14 +56,23 @@ public class VerifyJsonInterceptor implements Interceptor {
         // no-op
     }
 
-    public static boolean isJson(String content) {
+    public static boolean validateJson(String jsonStr) {
+        JsonElement jsonElement;
         try {
-            new JsonParser().parse(content);
-            return true;
+            jsonElement = new JsonParser().parse(jsonStr);
         } catch (Exception e) {
             logger.debug(e.getMessage(), e);
             return false;
         }
+
+        if (jsonElement == null) {
+            return false;
+        }
+
+        if (!jsonElement.isJsonObject()) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -73,10 +83,14 @@ public class VerifyJsonInterceptor implements Interceptor {
 
         byte[] content = event.getBody();
         String contentStr = new String(content, Charset.forName(sourceCharset));
-        Boolean isJson = isJson(contentStr);
+        Boolean isJson = validateJson(contentStr);
         if (!isJson) {
             Map<String, String> headers = event.getHeaders();
-            if (preserveExisting && headers.containsKey(headerName)) {
+            if (headers.containsKey(headerName) && preserveExisting) {
+                headers.put(headerName, headerValue);
+            }
+            else
+            {
                 headers.put(headerName, headerValue);
             }
 
@@ -156,7 +170,7 @@ public class VerifyJsonInterceptor implements Interceptor {
         private static String HEADER_NAME_DEFAULT = "verify_json";
 
         private static String HEADER_VALUE = "headerValue";
-        private static String HEADER_VALUE_DEFAULT = "verify_json_error_";
+        private static String HEADER_VALUE_DEFAULT = "verify_error_";
 
         private static String PRESERVE_EXISTING = "preserveExisting";
         private static Boolean PRESERVE_EXISTING_DEFAULT = true;

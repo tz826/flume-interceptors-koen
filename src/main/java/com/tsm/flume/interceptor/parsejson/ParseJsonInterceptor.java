@@ -42,7 +42,7 @@ public class ParseJsonInterceptor implements Interceptor {
     private static final Logger logger = LoggerFactory.getLogger(ParseJsonInterceptor.class);
 
     private String headerName;
-    private Boolean useheaderName;
+    private Boolean useHeaderName;
     private String fixedValue;
     private final String key;
     private final String sourceCharset;
@@ -51,9 +51,9 @@ public class ParseJsonInterceptor implements Interceptor {
     /**
      * Only {@link ParseJsonInterceptor.Builder} can build me
      */
-    private ParseJsonInterceptor(String headName, Boolean useHeadName, String fixedValue, String key, String sourceCharset, String targetCharset) {
+    private ParseJsonInterceptor(String headerName, Boolean useHeaderName, String fixedValue, String key, String sourceCharset, String targetCharset) {
         this.headerName = headerName;
-        this.useheaderName = useheaderName;
+        this.useHeaderName = useHeaderName;
         this.fixedValue = fixedValue;
         this.key = key;
         this.sourceCharset = sourceCharset;
@@ -73,7 +73,7 @@ public class ParseJsonInterceptor implements Interceptor {
 
         byte[] content = event.getBody();
         String keyValue = fixedValue;
-        if(useheaderName)
+        if(useHeaderName)
         {
             Map<String, String> headers = event.getHeaders();
 
@@ -133,7 +133,7 @@ public class ParseJsonInterceptor implements Interceptor {
         @Override
         public Interceptor build() {
             logger.info(String.format(
-                    "Creating ParseJsonInterceptor:headerName=%s, useheaderName=%s, fixedValue=%s, key=%s,source_charset=%s,target_charset=%s",
+                    "Creating ParseJsonInterceptor:headerName=%s, useHeaderName=%s, fixedValue=%s, key=%s,source_charset=%s,target_charset=%s",
                     headerName, useHeaderName, fixedValue, key, sourceCharset, targetCharset));
 
             Preconditions.checkArgument(headerName != null, "headerName name was misconfigured");
